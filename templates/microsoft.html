@@ -41,6 +41,9 @@
       tr {
         background-color: #fff;
       }
+      h3 {
+        font-size: 2rem;
+      }
     </style>
   </head>
   <body>
@@ -99,18 +102,14 @@
       <thead>
         <tr>
           <th>Index</th>
-          {% for col in microsoft_results.columns %}
-          <th>{{ col }}</th>
-          {% endfor %}
+          <th>Forecast</th>
         </tr>
       </thead>
       <tbody>
-        {% for index, row in microsoft_results.iterrows() %}
+        {% for index, row in microsoft_results[-n_forecast:].iterrows() %}
         <tr>
           <td>{{ index }}</td>
-          {% for col in microsoft_results.columns %}
-          <td>{{ row[col] }}</td>
-          {% endfor %}
+          <td>{{ row['Forecast'] }}</td>
         </tr>
         {% endfor %}
       </tbody>

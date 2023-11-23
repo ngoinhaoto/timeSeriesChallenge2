@@ -232,7 +232,7 @@ def meta():
         meta_percentage_difference_7d=meta_percentage_difference_7d,
         meta_volume=meta_volume,
         div_meta_df=div_meta_df ,
-        div_meta=div_meta
+        div_meta=div_meta, n_forecast=n_forecast
     )
 
 @app.route('/microsoft')
@@ -251,7 +251,7 @@ def microsoft():
     )
     div_microsoft = fig_microsoft.to_html(full_html=False)
 
-    return render_template('microsoft.html', 
+    return render_template('microsoft.html', n_forecast=n_forecast,
         microsoft_df=microsoft_df,
         microsoft_results=microsoft_results,
         microsoft_price_today=microsoft_price_today,
