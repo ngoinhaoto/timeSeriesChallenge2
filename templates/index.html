@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challenge 2 Predicting Time Series</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,500&display=swap");
+
+      body {
+        background-color: rgb(211, 255, 175) !important;
+        font-family: "Poppins";
+      }
+
+      .header {
+        font-weight: 300;
+        font-size: 3rem;
+        margin: auto;
+        text-align: center;
+      }
+
+      .bitcoin_logo {
+        color: rgb(168, 81, 0);
+        font-size: 2rem;
+      }
+      table {
+        margin: 2rem auto;
+        justify-content: center;
+        border: 2px solid rgb(48, 40, 40);
+        border-collapse: collapse;
+        width: 95%;
+        border-radius: 1rem !important;
+        background-color: white;
+      }
+
+      tr {
+        border: 2px solid rgb(48, 40, 40);
+        border-radius: 1rem !important;
+
+        padding: 8px;
+        text-align: left;
+      }
+      th,
+      td {
+        padding: 20px;
+        text-align: center;
+      }
+    </style>
+    <script
+      src="https://kit.fontawesome.com/c2ac5cb392.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <h2 class="header">Stock Prediction using LSTM</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Price (24h)</th>
+          <th>Volume</th>
+          <th>2 Month Forecast</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color: #0668e1; font-size: 1.5rem">
+            Meta <i class="fa-brands fa-meta"></i>
+          </td>
+          <td id="meta-price">{{ meta_price_today }}</td>
+          <td id="meta-price-24h">
+            {{ meta_price_24h }}<span
+              style="color: {% if percentage_difference < 0 %}red{% else %}green{% endif %};"
+            >
+              {% if percentage_difference < 0 %} decrease {% else %} increase {%
+              endif %} {{ percentage_difference }}%
+            </span>
+          </td>
+          <td id="meta-volume">{{ meta_volume }}</td>
+          <td
+            id="meta-2-months-forecast-graph"
+            style="width: 50%; vertical-align: top"
+          >
+            {{ div_meta|safe }}
+          </td>
+        </tr>
+        <tr>
+          <td style="color: #f65314; font-size: 1.5rem">
+            Microsoft <i class="fa-brands fa-microsoft"></i>
+          </td>
+          <td id="microsoft-price">{{ microsoft_price_today}}</td>
+          <td id="microsoft-price-24h">
+            {{ microsoft_price_24h }}<span
+              style="color: {% if microsoft_percentage_difference < 0 %}red{% else %}green{% endif %};"
+            >
+              {% if microsoft_percentage_difference < 0 %} decrease {% else %}
+              increase {% endif %} {{ microsoft_percentage_difference }}%
+            </span>
+          </td>
+          <td id="microsoft-volume">{{microsoft_volume}}</td>
+          <td id="microsoft-2-months-forecast-graph">
+            {{ div_microsoft|safe }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
