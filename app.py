@@ -72,6 +72,9 @@ meta_price_24h = results.Forecast[-n_forecast]
 meta_price_24h =  "{:.2f}".format(meta_price_24h)
 print(meta_price_24h)
 
+meta_price_7d = results.Forecast[-n_forecast + 7]
+meta_price_7d = "{:.2f}".format(meta_price_7d)
+
 
 meta_price_today = meta_df['Close'][-1]
 meta_price_today =  "{:.2f}".format(meta_price_today)
@@ -82,6 +85,10 @@ percentage_difference = ((float(meta_price_24h) - float(meta_price_today)) / flo
 percentage_difference = "{:.2f}".format(percentage_difference)
 
 percentage_difference = float(percentage_difference)
+
+meta_percentage_difference_7d = ((float(meta_price_7d) - float(meta_price_today)) / float(meta_price_today)) * 100
+meta_percentage_difference_7d = "{:.2f}".format(meta_percentage_difference_7d)
+meta_percentage_difference_7d = float(meta_percentage_difference_7d)
 
 
 #microsoft
@@ -151,6 +158,16 @@ microsoft_percentage_difference = "{:.2f}".format(microsoft_percentage_differenc
 microsoft_percentage_difference = float(microsoft_percentage_difference)
 
 
+microsoft_price_7d = microsoft_results.Forecast[-n_forecast + 7]
+microsoft_price_7d = "{:.2f}".format(microsoft_price_7d)
+
+microsoft_percentage_difference_7d = ((float(microsoft_price_7d) - float(microsoft_price_today)) / float(microsoft_price_today)) * 100
+microsoft_percentage_difference_7d = "{:.2f}".format(microsoft_percentage_difference_7d)
+microsoft_percentage_difference_7d = float(microsoft_percentage_difference_7d)
+
+
+
+
 @app.route('/')
 def index():
     fig_meta = px.line(results, x=results.index, y=['Actual', 'Forecast'], title='Meta Forecasting in 2 months')
@@ -183,7 +200,69 @@ def index():
     # Render the HTML template with the meta graph in the appropriate section
     return render_template('/index.html', microsoft_percentage_difference=microsoft_percentage_difference, microsoft_volume=microsoft_volume,
     microsoft_price_24h=microsoft_price_24h,microsoft_price_today=microsoft_price_today,
+    microsoft_price_7d=microsoft_price_7d, microsoft_percentage_difference_7d=microsoft_percentage_difference_7d,
+    meta_price_7d=meta_price_7d, meta_percentage_difference_7d=meta_percentage_difference_7d,
     div_meta=div_meta, div_microsoft=div_microsoft,meta_volume=meta_volume, meta_price_24h=meta_price_24h, meta_price_today = meta_price_today, percentage_difference=percentage_difference)
+
+
+@app.route('/meta')
+def meta():
+    # Code to fetch data and render the Meta page
+    fig_meta_df = px.line(meta_df, x=meta_df.index, y='Close', title='Meta Data')
+    div_meta_df = fig_meta_df.to_html(full_html=False)
+
+    fig_meta = px.line(results, x=results.index, y=['Actual', 'Forecast'], title='Meta Forecasting in 2 months')
+    fig_meta.add_shape(
+        go.layout.Shape(
+            type="line",
+            x0=results.index[-n_forecast], y0=results['Actual'].min(),
+            x1=results.index[-n_forecast], y1=results['Actual'].max(),
+            line=dict(color="red", width=1, dash="dash")
+        )
+    )
+    div_meta = fig_meta.to_html(full_html=False)
+
+
+    return render_template('meta.html', 
+        meta_df=meta_df,
+        results=results,
+        meta_price_today=meta_price_today,
+        meta_price_24h=meta_price_24h,
+        meta_price_7d=meta_price_7d,
+        meta_percentage_difference_7d=meta_percentage_difference_7d,
+        meta_volume=meta_volume,
+        div_meta_df=div_meta_df ,
+        div_meta=div_meta
+    )
+
+@app.route('/microsoft')
+def microsoft():
+    fig_microsoft_df = px.line(microsoft_df, x=microsoft_df.index, y='Close', title='Microsoft Data')
+    div_microsoft_df = fig_microsoft_df.to_html(full_html=False)
+
+    fig_microsoft = px.line(microsoft_results, x=microsoft_results.index, y=['Actual', 'Forecast'], title='Microsoft Forecasting in 2 months')
+    fig_microsoft.add_shape(
+        go.layout.Shape(
+            type="line",
+            x0=microsoft_results.index[-n_forecast], y0=microsoft_results['Actual'].min(),
+            x1=microsoft_results.index[-n_forecast], y1=microsoft_results['Actual'].max(),
+            line=dict(color="red", width=1, dash="dash")
+        )
+    )
+    div_microsoft = fig_microsoft.to_html(full_html=False)
+
+    return render_template('microsoft.html', 
+        microsoft_df=microsoft_df,
+        microsoft_results=microsoft_results,
+        microsoft_price_today=microsoft_price_today,
+        microsoft_price_24h=microsoft_price_24h,
+        microsoft_price_7d=microsoft_price_7d,
+        microsoft_percentage_difference_7d=microsoft_percentage_difference_7d,
+        microsoft_volume=microsoft_volume,
+        div_microsoft_df=div_microsoft_df,
+        div_microsoft=div_microsoft
+    )
+
 
 if __name__ == '__main__':
     app.run(debug=True) 

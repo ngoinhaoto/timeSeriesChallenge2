@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meta Datatable</title>
+    <script
+      src="https://kit.fontawesome.com/c2ac5cb392.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,500&display=swap");
+
+      body {
+        background-color: rgb(211, 255, 175) !important;
+        font-family: "Poppins";
+      }
+      .header {
+        font-weight: 300;
+        font-size: 3rem;
+        margin: auto;
+        text-align: center;
+      }
+      table {
+        margin: 2rem auto;
+        border-collapse: collapse;
+        width: 80%;
+        border: 1px solid #000;
+      }
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #c3f693;
+      }
+
+      tr {
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 class="header">Meta Datatable</h2>
+    <h3 style="text-align: center">Meta Data Graph from 2019 till now</h3>
+    <div>{{ div_meta_df|safe }}</div>
+    <h3 style="text-align: center">Meta DataFrame - First 10</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Index</th>
+          {% for col in meta_df.columns %}
+          <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for index, row in meta_df.head(10).iterrows() %}
+        <tr>
+          <td>{{ index }}</td>
+          {% for col in meta_df.columns %}
+          <td>{{ row[col] }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h3 style="text-align: center">Meta DataFrame - Last 10</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Index</th>
+          {% for col in meta_df.columns %}
+          <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for index, row in meta_df.tail(10).iterrows() %}
+        <tr>
+          <td>{{ index }}</td>
+          {% for col in meta_df.columns %}
+          <td>{{ row[col] }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3 style="text-align: center">Forecast result</h3>
+    <div>{{ div_meta|safe }}</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Index</th>
+          {% for col in results.columns %}
+          <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for index, row in results.iterrows() %}
+        <tr>
+          <td>{{ index }}</td>
+          {% for col in results.columns %}
+          <td>{{ row[col] }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

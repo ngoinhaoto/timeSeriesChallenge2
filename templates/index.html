@@ -29,7 +29,7 @@
         justify-content: center;
         border: 2px solid rgb(48, 40, 40);
         border-collapse: collapse;
-        width: 95%;
+        width: 99%;
         border-radius: 1rem !important;
         background-color: white;
       }
@@ -61,14 +61,17 @@
           <th>Name</th>
           <th>Price</th>
           <th>Price (24h)</th>
+          <th>Price (7d)</th>
           <th>Volume</th>
           <th>2 Month Forecast</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="color: #0668e1; font-size: 1.5rem">
-            Meta <i class="fa-brands fa-meta"></i>
+          <td style="color: #0668e1; font-size: 1.25rem">
+            <a href="/meta" style="color: inherit"
+              >Meta <i class="fa-brands fa-meta"></i
+            ></a>
           </td>
           <td id="meta-price">{{ meta_price_today }}</td>
           <td id="meta-price-24h">
@@ -77,6 +80,14 @@
             >
               {% if percentage_difference < 0 %} decrease {% else %} increase {%
               endif %} {{ percentage_difference }}%
+            </span>
+          </td>
+          <td id="meta-price-7d">
+            {{ meta_price_7d }}<span
+              style="color: {% if meta_percentage_difference_7d < 0 %}red{% else %}green{% endif %};"
+            >
+              {% if meta_percentage_difference_7d < 0 %} decrease {% else %}
+              increase {% endif %} {{ meta_percentage_difference_7d }}%
             </span>
           </td>
           <td id="meta-volume">{{ meta_volume }}</td>
@@ -88,8 +99,10 @@
           </td>
         </tr>
         <tr>
-          <td style="color: #f65314; font-size: 1.5rem">
-            Microsoft <i class="fa-brands fa-microsoft"></i>
+          <td style="color: #f65314; font-size: 1.25rem">
+            <a href="/microsoft" style="color: inherit"
+              >Microsoft <i class="fa-brands fa-microsoft"></i
+            ></a>
           </td>
           <td id="microsoft-price">{{ microsoft_price_today}}</td>
           <td id="microsoft-price-24h">
@@ -100,6 +113,15 @@
               increase {% endif %} {{ microsoft_percentage_difference }}%
             </span>
           </td>
+          <td id="microsoft-price-7d">
+            {{ microsoft_price_7d }}<span
+              style="color: {% if microsoft_percentage_difference_7d < 0 %}red{% else %}green{% endif %};"
+            >
+              {% if microsoft_percentage_difference_7d < 0 %} decrease {% else
+              %} increase {% endif %} {{ microsoft_percentage_difference_7d }}%
+            </span>
+          </td>
+
           <td id="microsoft-volume">{{microsoft_volume}}</td>
           <td id="microsoft-2-months-forecast-graph">
             {{ div_microsoft|safe }}
