@@ -17,6 +17,7 @@ app = Flask(__name__)
 
 meta_df = yf.download(tickers=['META'], period='4y')
 
+
 meta_data = meta_df['Close'].fillna(method='ffill')
 meta_dataset = meta_data.values.reshape(-1, 1)
 meta_training_data_len = math.ceil(len(meta_dataset) * .8)
@@ -31,15 +32,16 @@ n_lookback = 120 #len of input sequences
 n_forecast = 60 #len of prediction
 
 
-meta_X = []
-meta_Y = []
+# meta_X = []
+# meta_Y = []
 
-for i in range(n_lookback, len(meta_dataset) - n_forecast + 1):
-    meta_X.append(meta_dataset[i - n_lookback: i])
-    meta_Y.append(meta_dataset[i: i + n_forecast])
+# for i in range(n_lookback, len(meta_dataset) - n_forecast + 1):
+#     meta_X.append(meta_dataset[i - n_lookback: i])
+#     meta_Y.append(meta_dataset[i: i + n_forecast])
 
-meta_X = np.array(meta_X)
-meta_Y = np.array(meta_Y)
+# meta_X = np.array(meta_X)
+# meta_Y = np.array(meta_Y)
+
 meta_lookback = meta_dataset[-n_lookback:]
 
 meta_lookback = meta_lookback.reshape(1, n_lookback, 1)
@@ -53,7 +55,10 @@ meta_past = meta_df[['Close']][-180:].reset_index()
 meta_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
 meta_past['Date'] = pd.to_datetime(meta_past['Date'])
 meta_past['Forecast'] = np.nan
-meta_past['Forecast'].iloc[-1] = meta_past['Actual'].iloc[-1]
+
+meta_past.loc[meta_past.index[-1], 'Forecast'] = meta_past.loc[meta_past.index[-1], 'Actual']
+
+# meta_past['Forecast'].iloc[-1] = meta_past['Actual'].iloc[-1]
 
 
 meta_future = pd.DataFrame(columns=['Date', 'Actual', 'Forecast'])
@@ -107,16 +112,15 @@ n_lookback = 120 #len of input sequences
 n_forecast = 60 #len of prediction
 
 
-microsoft_X = []
-microsoft_Y = []
+# microsoft_X = []
+# microsoft_Y = []
 
-for i in range(n_lookback, len(microsoft_dataset) - n_forecast + 1):
-    microsoft_X.append(microsoft_dataset[i - n_lookback: i])
-    microsoft_Y.append(microsoft_dataset[i: i + n_forecast])
-microsoft_X = np.array(microsoft_X)
-microsoft_Y = np.array(microsoft_Y)
+# for i in range(n_lookback, len(microsoft_dataset) - n_forecast + 1):
+#     microsoft_X.append(microsoft_dataset[i - n_lookback: i])
+#     microsoft_Y.append(microsoft_dataset[i: i + n_forecast])
+# microsoft_X = np.array(microsoft_X)
+# microsoft_Y = np.array(microsoft_Y)
 
-microsoft_training_size = int(microsoft_X.shape[0] * 0.8)
 
 microsoft_lookback = microsoft_dataset[-n_lookback:]
 
@@ -130,7 +134,10 @@ microsoft_past = microsoft_df[['Close']][-180:].reset_index()
 microsoft_past.rename(columns={'index': 'Date', 'Close': 'Actual'}, inplace=True)
 microsoft_past['Date'] = pd.to_datetime(microsoft_past['Date'])
 microsoft_past['Forecast'] = np.nan
-microsoft_past['Forecast'].iloc[-1] = microsoft_past['Actual'].iloc[-1]
+
+microsoft_past.loc[microsoft_past.index[-1], 'Forecast'] = microsoft_past.loc[microsoft_past.index[-1], 'Actual']
+
+# microsoft_past['Forecast'].iloc[-1] = microsoft_past['Actual'].iloc[-1]
 
 
 microsoft_future = pd.DataFrame(columns=['Date', 'Actual', 'Forecast'])
